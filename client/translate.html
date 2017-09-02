@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+	// console.log("button clicked -> "+$("#srcMsg").val()+" "+$("#sLang").val());
+		var req = {
+		"sMsg":$("#srcMsg").val(),
+		"fromL":$("#sLang").val(),
+		"toL":$("#tLang").val()
+		};
+        $.ajax({
+            url: 'http://localhost:3000/gTran',
+            type: 'post',
+			contentType: "application/json; charset=utf-8",
+			crossDomain: true,
+            success: function (data) {
+				var dataJson = JSON.parse(data);
+               $("#dstMsg").val(dataJson.tMsg);
+            },
+			failure: function(errMsg) {
+				alert(errMsg);
+			},
+			cors:false,
+            data: JSON.stringify(req)
+        });
+    });
+});
+</script>
+</head>
+<body>
+<h2 align='center'>Google Translate API with NodeJS</h2>
+<h3 align='center'>Natural Language Processing</h3>
+<table align='center'>
+	<tr><td><textarea rows="4" cols="50" id="srcMsg"></textarea></td></tr>
+	<tr>	
+		<td>
+		
+		<span>From&nbsp;
+			<select id="sLang">
+				<option value="ta">Tamil</option>
+				<option value="te">Telugu</option>
+				<option value="ml">Malayalam</option>
+				<option value="kn">Kannada</option>
+				<option value="hi">Hindi</option>
+				<option value="en">English</option>
+			</select>
+		</span>	
+		
+		<span>To&nbsp;		
+			<select id="tLang">
+				<option value="en">English</option>
+				<option value="ta">Tamil</option>
+				<option value="te">Telugu</option>
+				<option value="ml">Malayalam</option>
+				<option value="kn">Kannada</option>
+				<option value="hi">Hindi</option>
+			</select>
+		</span>
+		
+		</td>
+	</tr>
+	<tr><td><textarea rows="4" cols="50" id="dstMsg"></textarea></td></tr>
+	<tr>
+		<td colspan='2' align='center'><button class="btn btn-primary">Translate</button></td>
+	</tr>
+</table>
+</body>
+</html>
